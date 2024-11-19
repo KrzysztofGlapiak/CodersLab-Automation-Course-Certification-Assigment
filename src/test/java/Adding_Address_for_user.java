@@ -25,7 +25,7 @@ public class Adding_Address_for_user {
 
 
     @Given("user logged in")
-    public void NewAddress() {
+    public void loginasd() {
         driver.get("https://mystore-testlab.coderslab.pl/index.php");
         driver.manage().window().maximize();
         WebElement loginbutton = driver.findElement(By.xpath("//*[@id=\"_desktop_user_info\"]/div/a/span"));
