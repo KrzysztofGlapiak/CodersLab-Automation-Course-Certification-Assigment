@@ -1,3 +1,7 @@
+import io.cucumber.java.en.And;
+import io.cucumber.java.en.Given;
+import io.cucumber.java.en.Then;
+import io.cucumber.java.en.When;
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -8,28 +12,32 @@ import java.io.IOException;
 
 
 public class Item_Purchase {
-    public static void main(String[] args) throws InterruptedException {
+    WebDriver driver;
 
+    public Item_Purchase() {
         ChromeOptions options = new ChromeOptions();
         options.addArguments("--disable-search-engine-choice-screen");
-        WebDriver driver = new ChromeDriver(options);
+        this.driver = new ChromeDriver(options);
+    }
+
+    @Given("user logged in to shop")
+    public void login() {
         driver.get("https://mystore-testlab.coderslab.pl/index.php");
         driver.manage().window().maximize();
-
         WebElement loginbutton = driver.findElement(By.xpath("//*[@id=\"_desktop_user_info\"]/div/a/span"));
         loginbutton.click();
-
         WebElement email = driver.findElement(By.id("field-email"));
         email.clear();
         email.sendKeys("xzixwonvyceimfxotg@hthlm.com");
-
         WebElement password = driver.findElement(By.id("field-password"));
         password.clear();
         password.sendKeys("selenium123");
-
         WebElement SignIn = driver.findElement(By.id("submit-login"));
         SignIn.click();
+    }
 
+    @When("user selects a product")
+    public void product() throws InterruptedException {
         driver.get("https://mystore-testlab.coderslab.pl/index.php");
         WebElement sweater = driver.findElement(By.xpath("//*[@id=\"content\"]/section/div/div[2]/article/div/div[2]/h3/a"));
         sweater.click();
@@ -42,11 +50,19 @@ public class Item_Purchase {
         for (int i = 1; i < 5; i++) {
             quantity.click();
         }
+    }
+
+    @And("user adds items to the cart")
+    public void cart() throws InterruptedException {
         WebElement cart = driver.findElement(By.xpath("//button[contains(@class, 'btn btn-primary add-to-cart')]"));
         cart.click();
         Thread.sleep(1000);
         WebElement addtocart = driver.findElement(By.xpath("//a[contains(text(), 'Proceed to checkout')]"));
         addtocart.click();
+    }
+
+    @Then("user place order")
+    public void submitOrder() throws InterruptedException {
         WebElement checkout = driver.findElement(By.xpath("//a[contains(text(), 'Proceed to checkout')]"));
         checkout.click();
         WebElement continuebutton = driver.findElement(By.xpath("//button[contains(@name, 'confirm-addresses')]"));
@@ -60,17 +76,23 @@ public class Item_Purchase {
         Thread.sleep(1000);
         WebElement placeorder = driver.findElement(By.xpath("//div[@id='payment-confirmation']//button[1]"));
         placeorder.click();
+    }
 
+    @And("order confirmation screenshot is taken")
+    public void screenshot() {
         File screenshot = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
         File destination = new File("C:\\Users\\tass\\OneDrive\\Desktop\\Screenshot\\screenshot.png");
         try {
             FileUtils.copyFile(screenshot, destination);
             System.out.println("Screenshot saved as screenshot in: " + destination.getAbsolutePath());
-        } catch (IOException e) {
+        } catch (
+                IOException e) {
             e.printStackTrace();
-
         }
-        driver.quit();
     }
+        @And("browser closes")
+                public void close() {
+            driver.quit();
+        }
 }
 
