@@ -1,4 +1,4 @@
-# CodersLab Automation Course Certification Assignment
+# Automation Test Cases (Java + cucumber)
 
 This repository contains automated test scripts created as part of the CodersLab Automation Course certification assignment. The tests cover various functionalities of a sample web application, including user registration, address management, and item purchase.
 
